@@ -24,7 +24,8 @@ public enum ErrorCode {
     SINGERNAMELEN_NOTVALID(1010, "singer name length must be at least 1 char", HttpStatus.BAD_REQUEST),
     SONGID_ISNULL(1011, "song id must be not null", HttpStatus.BAD_REQUEST),
     SINGERID_ISNULL(1012, "singer id must be not null", HttpStatus.BAD_REQUEST),
-    
+    FT_ISNULL(1013, "ft must be not null", HttpStatus.BAD_REQUEST),
+    SONGOFSINGER_NOTEXIST(1014, "song of singer is not exist", HttpStatus.BAD_REQUEST),
     ;
 
     int code;

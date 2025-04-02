@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.bty.music_player.dto.request.SongOfSingerCreationRequest;
+import com.bty.music_player.dto.request.SongOfSingerDeleteRequest;
+import com.bty.music_player.dto.request.SongOfSingerUpdateRequest;
 import com.bty.music_player.dto.response.SingerResponse;
 import com.bty.music_player.dto.response.SongOfSingerResponse;
 import com.bty.music_player.dto.response.SongResponse;
@@ -74,5 +76,32 @@ public class SongOfSingerService {
             .isFt(songOfSinger.isFt())
             .build();
         return songOfSingerResponse;
+    }
+    
+    public SongOfSingerResponse updateFt(SongOfSingerUpdateRequest request) {
+        Song song = songRepository.findById(request.getSongId())
+            .orElseThrow(() -> new AppException(ErrorCode.SONG_NOTEXIST));
+        
+        Singer singer = singerRepository.findById(request.getSingerId())
+            .orElseThrow(() -> new AppException(ErrorCode.SINGER_NOTEXIST));
+        
+        SongOfSingerId songOfSingerId = new SongOfSingerId(song, singer);
+        SongOfSinger songOfSinger = songOfSingerRepository.findById(songOfSingerId)
+            .orElseThrow(() -> new AppException(ErrorCode.SONGOFSINGER_NOTEXIST));
+        songOfSinger.setFt(request.getIsFt());
+        
+        songOfSinger = songOfSingerRepository.save(songOfSinger);
+        return toSongOfSingerResponse(songOfSinger);
+    }
+    
+    public void delete(SongOfSingerDeleteRequest request) {
+        Song song = songRepository.findById(request.getSongId())
+            .orElseThrow(() -> new AppException(ErrorCode.SONG_NOTEXIST));
+        
+        Singer singer = singerRepository.findById(request.getSingerId())
+            .orElseThrow(() -> new AppException(ErrorCode.SINGER_NOTEXIST));
+        
+        SongOfSingerId songOfSingerId = new SongOfSingerId(song, singer);
+        songOfSingerRepository.deleteById(songOfSingerId);
     }
 }
