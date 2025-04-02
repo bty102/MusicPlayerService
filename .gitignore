@@ -33,4 +33,5 @@ build/
 .vscode/
 
 ### SQL server ###
-data/
+data/*.mdf
+data/*.ldf
