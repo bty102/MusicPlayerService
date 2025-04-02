@@ -1,6 +1,8 @@
 --select * from singer
 --select * from song_singer
 --select * from song
+--select * from account
+--select * from account_role
 
 if exists(select * from sys.objects where name = 'trigger_delete_song_singer')
 	drop trigger trigger_delete_song_singer

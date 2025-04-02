@@ -26,6 +26,11 @@ public enum ErrorCode {
     SINGERID_ISNULL(1012, "singer id must be not null", HttpStatus.BAD_REQUEST),
     FT_ISNULL(1013, "ft must be not null", HttpStatus.BAD_REQUEST),
     SONGOFSINGER_NOTEXIST(1014, "song of singer is not exist", HttpStatus.BAD_REQUEST),
+    ACCOUNTNAME_ISNULL(1015, "accout name must be not null", HttpStatus.BAD_REQUEST),
+    ACCOUNTPW_ISNULL(1016, "accout password must be not null", HttpStatus.BAD_REQUEST),
+    ACCOUNTNAMELEN_NOTVALID(1017, "account name length must be at least 3 char", HttpStatus.BAD_REQUEST),
+    ACCOUNTPWLEN_NOTVALID(1018, "account password length must be at least 3 char", HttpStatus.BAD_REQUEST),
+    ACCOUNT_EXISTED(1019, "account existed", HttpStatus.BAD_REQUEST),
     ;
 
     int code;

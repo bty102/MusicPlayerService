@@ -1,0 +1,38 @@
+package com.bty.music_player.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.bty.music_player.dto.request.AccountCreationRequest;
+import com.bty.music_player.dto.response.AccountResponse;
+import com.bty.music_player.entity.Account;
+import com.bty.music_player.exception.AppException;
+import com.bty.music_player.exception.ErrorCode;
+import com.bty.music_player.mapper.AccountMapper;
+import com.bty.music_player.repository.AccountRepository;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+
+@Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class AccountService {
+    
+    AccountRepository accountRepository;
+    AccountMapper accountMapper;
+    
+    public List<AccountResponse> getAll() {
+        return accountRepository.findAll().stream().map(accountMapper::toAccountResponse).toList();
+    }
+    
+    public AccountResponse create(AccountCreationRequest request) {
+        if(accountRepository.existsByAccountName(request.getAccountName())) throw new AppException(ErrorCode.ACCOUNT_EXISTED);
+        Account account = accountMapper.toAccount(request);
+
+        account = accountRepository.save(account);
+        return accountMapper.toAccountResponse(account);
+    }
+}
