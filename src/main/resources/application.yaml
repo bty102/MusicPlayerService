@@ -1,0 +1,10 @@
+server:
+    port: 8080
+    servlet:
+        context-path: /player
+
+spring:
+    datasource:
+        url: "jdbc:sqlserver://;servername=BTYLAP;encrypt=true;databaseName=music_player;trustServerCertificate=true"
+        password: "123"
+        username: "sa"
