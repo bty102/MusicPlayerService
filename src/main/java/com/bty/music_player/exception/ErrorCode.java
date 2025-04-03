@@ -32,7 +32,13 @@ public enum ErrorCode {
     ACCOUNTPWLEN_NOTVALID(1018, "account password length must be at least 3 char", HttpStatus.BAD_REQUEST),
     ACCOUNT_EXISTED(1019, "account existed", HttpStatus.BAD_REQUEST),
     ACCOUNTID_ISNULL(1020, "account id must be not null", HttpStatus.BAD_REQUEST),
-    ACCOUNT_NOTEXIST(1021, "account is not exist", HttpStatus.BAD_REQUEST)
+    ACCOUNT_NOTEXIST(1021, "account is not exist", HttpStatus.BAD_REQUEST),
+    PERMISSIONNAME_ISNULL(1022, "permission name must be not null", HttpStatus.BAD_REQUEST),
+    PERMISSION_EXISTED(1023, "permission existed", HttpStatus.BAD_REQUEST),
+    ROLE_EXISTED(1024, "role existed", HttpStatus.BAD_REQUEST),
+    ROLENAME_ISNULL(1025, "role name must be not null", HttpStatus.BAD_REQUEST),
+    ROLENAMELEN_NOTVALID(1026, "role name length must be at least 1 char", HttpStatus.BAD_REQUEST),
+    PERMISSIONNAMELEN_NOTVALID(1027, "permission name length must be at least 1 char", HttpStatus.BAD_REQUEST),
     ;
 
     int code;
