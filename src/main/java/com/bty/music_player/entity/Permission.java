@@ -30,6 +30,6 @@ public class Permission {
     @Column(name = "name")
     String name;
 
-    @Column(name = "descibe")
-    String descibe;
+    @Column(name = "describe")
+    String describe;
 }

@@ -31,6 +31,8 @@ public enum ErrorCode {
     ACCOUNTNAMELEN_NOTVALID(1017, "account name length must be at least 3 char", HttpStatus.BAD_REQUEST),
     ACCOUNTPWLEN_NOTVALID(1018, "account password length must be at least 3 char", HttpStatus.BAD_REQUEST),
     ACCOUNT_EXISTED(1019, "account existed", HttpStatus.BAD_REQUEST),
+    ACCOUNTID_ISNULL(1020, "account id must be not null", HttpStatus.BAD_REQUEST),
+    ACCOUNT_NOTEXIST(1021, "account is not exist", HttpStatus.BAD_REQUEST)
     ;
 
     int code;

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.bty.music_player.dto.request.AccountCreationRequest;
+import com.bty.music_player.dto.request.AccountUpdateRequest;
 import com.bty.music_player.dto.response.AccountResponse;
 import com.bty.music_player.entity.Account;
 import com.bty.music_player.exception.AppException;
@@ -34,5 +35,19 @@ public class AccountService {
 
         account = accountRepository.save(account);
         return accountMapper.toAccountResponse(account);
+    }
+    
+    public AccountResponse update(Integer id, AccountUpdateRequest request) {
+        Account account = accountRepository.findById(id)
+            .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOTEXIST));
+        accountMapper.update(account, request);
+        account = accountRepository.save(account);
+        return accountMapper.toAccountResponse(account);
+    }
+    
+    public void delete(Integer id) {
+        Account account = accountRepository.findById(id)
+            .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOTEXIST));
+        accountRepository.delete(account);
     }
 }

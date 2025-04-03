@@ -1,0 +1,25 @@
+package com.bty.music_player.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.bty.music_player.dto.response.PermissionResponse;
+import com.bty.music_player.mapper.PermissionMapper;
+import com.bty.music_player.repository.PermissionRepository;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+
+@Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class PermissionService {
+    PermissionRepository permissionRepository;
+    PermissionMapper permissionMapper;
+    
+    public List<PermissionResponse> getAll() {
+        return permissionRepository.findAll().stream().map(permissionMapper::toPermissionResponse).toList();
+    }
+}
