@@ -8,3 +8,6 @@ spring:
         url: "jdbc:sqlserver://;servername=BTYLAP;encrypt=true;databaseName=music_player;trustServerCertificate=true"
         password: "123"
         username: "sa"
+
+jwt:
+    signerKey: "silGlN6mtlv51vS5+mMORKv6vRxqU5GAbmJU2ukJY+x/fBW94ZqJOXlzTWSln1Oj"

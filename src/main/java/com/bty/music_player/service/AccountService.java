@@ -2,6 +2,8 @@ package com.bty.music_player.service;
 
 import java.util.List;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bty.music_player.dto.request.AccountCreationRequest;
@@ -32,6 +34,8 @@ public class AccountService {
     public AccountResponse create(AccountCreationRequest request) {
         if(accountRepository.existsByAccountName(request.getAccountName())) throw new AppException(ErrorCode.ACCOUNT_EXISTED);
         Account account = accountMapper.toAccount(request);
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
 
         account = accountRepository.save(account);
         return accountMapper.toAccountResponse(account);
