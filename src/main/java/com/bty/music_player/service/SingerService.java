@@ -3,6 +3,7 @@ package com.bty.music_player.service;
 import java.util.List;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.bty.music_player.dto.request.SingerCreationRequest;
@@ -24,10 +25,12 @@ public class SingerService {
     SingerRepository singerRepository;
     SingerMapper singerMapper;
     
+    @PreAuthorize("hasRole('ADMIN')")
     public List<SingerResponse> getAll() {
         return singerRepository.findAll().stream().map(singerMapper::toSingerResponse).toList();
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     public SingerResponse create(SingerCreationRequest request) {
         if(singerRepository.existsByName(request.getName())) {
             throw new AppException(ErrorCode.SINGERNAME_EXISTED);

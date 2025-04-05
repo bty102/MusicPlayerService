@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.bty.music_player.dto.request.SongCreationRequest;
@@ -34,10 +35,12 @@ public class SongService {
     SingerRepository singerRepository;
     SongOfSingerRepository songOfSingerRepository;
     
+    @PreAuthorize("hasAuthority('PER_GET_ALL_SONGS')")
     public List<SongResponse> getAll() {
         return songRepository.findAll().stream().map(songMapper::toSongRespone).toList();
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     public SongResponse create(SongCreationRequest request) {
         if(songRepository.existsByName(request.getName())) throw new AppException(ErrorCode.SONGNAME_EXISTED);
         request.getSingerNames().forEach(singerName -> {

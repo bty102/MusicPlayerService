@@ -42,6 +42,7 @@ import lombok.experimental.NonFinal;
 public class AuthenticationService {
     
     AccountRepository accountRepository;
+    PasswordEncoder passwordEncoder;
     
     @NonFinal
     @Value("${jwt.signerKey}")
@@ -50,7 +51,6 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         Account account = accountRepository.findByAccountName(request.getAccountName())
             .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOTEXIST));
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         if(!passwordEncoder.matches(request.getPassword(), account.getPassword())) {
             throw new AppException(ErrorCode.ACCOUNTPW_NOTMATCH);
         }
@@ -82,7 +82,7 @@ public class AuthenticationService {
             .expirationTime(new Date(
                 Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
             ))
-            .claim("SCOPE", buildScope(account))
+            .claim("scope", buildScope(account))
             .build();
         Payload payload = new Payload(claimsSet.toJSONObject());
         JWSObject jwsObject = new JWSObject(header, payload);
@@ -98,9 +98,9 @@ public class AuthenticationService {
     private String buildScope(Account account) {
         StringJoiner stringJoiner = new StringJoiner(" ");
         account.getRoles().forEach(role -> {
-            stringJoiner.add(role.getName());
+            stringJoiner.add("ROLE_" + role.getName());
             role.getPermissions().forEach(permission -> {
-                stringJoiner.add(permission.getName());
+                stringJoiner.add("PER_" + permission.getName());
             });
         });
         return stringJoiner.toString();

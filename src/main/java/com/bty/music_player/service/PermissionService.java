@@ -2,6 +2,7 @@ package com.bty.music_player.service;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.bty.music_player.dto.request.PermissionCreationRequest;
@@ -23,10 +24,12 @@ public class PermissionService {
     PermissionRepository permissionRepository;
     PermissionMapper permissionMapper;
     
+    @PreAuthorize("hasRole('ADMIN')")
     public List<PermissionResponse> getAll() {
         return permissionRepository.findAll().stream().map(permissionMapper::toPermissionResponse).toList();
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     public PermissionResponse create(PermissionCreationRequest request) {
         if(permissionRepository.existsByName(request.getName())) {
             throw new AppException(ErrorCode.PERMISSION_EXISTED);

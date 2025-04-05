@@ -5,6 +5,12 @@
 --select * from account_role
 --select * from role
 --select * from permission
+--select * from role_permission
+--delete from account_role
+--delete from role_permission
+--delete from account
+--delete from permission
+--delete from role
 
 if exists(select * from sys.objects where name = 'trigger_delete_song_singer')
 	drop trigger trigger_delete_song_singer

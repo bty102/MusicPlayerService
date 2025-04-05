@@ -3,6 +3,7 @@ package com.bty.music_player.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.bty.music_player.dto.request.SongOfSingerCreationRequest;
@@ -37,6 +38,7 @@ public class SongOfSingerService {
     SongRepository songRepository;
     SingerRepository singerRepository;
     
+    @PreAuthorize("hasRole('ADMIN')")
     public List<SongOfSingerResponse> getAll() {
         List<SongOfSingerResponse> songOfSingerResponses = new ArrayList<>();
         songOfSingerRepository.findAll().forEach(songOfSinger -> {
@@ -52,6 +54,7 @@ public class SongOfSingerService {
         return songOfSingerResponses;
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     public SongOfSingerResponse create(SongOfSingerCreationRequest request) {
         Song song = songRepository.findById(request.getSongId()).orElseThrow(() -> new AppException(ErrorCode.SONG_NOTEXIST));
         Singer singer = singerRepository.findById(request.getSingerId()).orElseThrow(() -> new AppException(ErrorCode.SINGER_NOTEXIST));
@@ -78,6 +81,7 @@ public class SongOfSingerService {
         return songOfSingerResponse;
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     public SongOfSingerResponse updateFt(SongOfSingerUpdateRequest request) {
         Song song = songRepository.findById(request.getSongId())
             .orElseThrow(() -> new AppException(ErrorCode.SONG_NOTEXIST));
@@ -94,6 +98,7 @@ public class SongOfSingerService {
         return toSongOfSingerResponse(songOfSinger);
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     public void delete(SongOfSingerDeleteRequest request) {
         Song song = songRepository.findById(request.getSongId())
             .orElseThrow(() -> new AppException(ErrorCode.SONG_NOTEXIST));
