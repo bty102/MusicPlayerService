@@ -1,6 +1,7 @@
 package com.bty.music_player.exception;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,6 +23,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
         ErrorCode errorCode = ErrorCode.valueOf(exception.getFieldError().getDefaultMessage());
+        ApiResponse apiResponse = ApiResponse.builder()
+            .code(errorCode.getCode())
+            .message(errorCode.getMessage())
+            .build();
+        return ResponseEntity.status(errorCode.getHttpStatusCode()).body(apiResponse);
+    }
+    
+    @ExceptionHandler(value = AccessDeniedException.class)
+    public ResponseEntity<ApiResponse> handleAccessDeniedException(AccessDeniedException exception) {
+        ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
         ApiResponse apiResponse = ApiResponse.builder()
             .code(errorCode.getCode())
             .message(errorCode.getMessage())

@@ -60,4 +60,12 @@ public class AccountController {
             .result("account deleted")
             .build();
     }
+    
+    @GetMapping("myinfo")
+    public ApiResponse<AccountResponse> getMyInfo() {
+        var result = accountService.getMyInfo();
+        return ApiResponse.<AccountResponse>builder()
+            .result(result)
+            .build();
+    }
 }

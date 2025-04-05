@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bty.music_player.dto.request.ApiResponse;
 import com.bty.music_player.dto.request.AuthenticationRequest;
 import com.bty.music_player.dto.request.IntrospectRequest;
+import com.bty.music_player.dto.request.LogOutRequest;
 import com.bty.music_player.dto.response.AuthenticationResponse;
 import com.bty.music_player.dto.response.IntrospectResponse;
 import com.bty.music_player.service.AuthenticationService;
@@ -40,6 +41,14 @@ public class AuthenticationController {
         var result = authenticationService.introspect(request);
         return ApiResponse.<IntrospectResponse>builder()
             .result(result)
+            .build();
+    }
+    
+    @PostMapping("/logout")
+    public ApiResponse<String> logOut(@RequestBody LogOutRequest request) throws ParseException, JOSEException {
+        authenticationService.logOut(request);
+        return ApiResponse.<String>builder()
+            .result("logouted")
             .build();
     }
 }

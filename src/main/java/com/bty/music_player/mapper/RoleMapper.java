@@ -3,17 +3,14 @@ package com.bty.music_player.mapper;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bty.music_player.dto.request.RoleCreationRequest;
 import com.bty.music_player.dto.response.RoleResponse;
 import com.bty.music_player.entity.Permission;
 import com.bty.music_player.entity.Role;
-import com.bty.music_player.repository.PermissionRepository;
 
 @Mapper(componentModel = "spring")
 public interface RoleMapper {

@@ -5,26 +5,28 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.StringJoiner;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bty.music_player.dto.request.AuthenticationRequest;
 import com.bty.music_player.dto.request.IntrospectRequest;
+import com.bty.music_player.dto.request.LogOutRequest;
 import com.bty.music_player.dto.response.AuthenticationResponse;
 import com.bty.music_player.dto.response.IntrospectResponse;
 import com.bty.music_player.entity.Account;
+import com.bty.music_player.entity.InvalidatedToken;
 import com.bty.music_player.exception.AppException;
 import com.bty.music_player.exception.ErrorCode;
 import com.bty.music_player.repository.AccountRepository;
+import com.bty.music_player.repository.InvalidatedTokenRepository;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jose.JWSVerifier;
-import com.nimbusds.jose.KeyLengthException;
 import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
@@ -43,6 +45,7 @@ public class AuthenticationService {
     
     AccountRepository accountRepository;
     PasswordEncoder passwordEncoder;
+    InvalidatedTokenRepository invalidatedTokenRepository;
     
     @NonFinal
     @Value("${jwt.signerKey}")
@@ -66,16 +69,32 @@ public class AuthenticationService {
         
         Date expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
 
-        boolean valid = signedJWT.verify(jwsVerifier) && expiryTime.after(new Date());
+        boolean valid = signedJWT.verify(jwsVerifier) 
+            && expiryTime.after(new Date())
+            && !invalidatedTokenRepository.findById(signedJWT.getJWTClaimsSet().getJWTID())
+                .isPresent();
         return IntrospectResponse.builder()
             .valid(valid)
             .build();
+    }
+    
+    public void logOut(LogOutRequest request) throws ParseException, JOSEException {
+        IntrospectResponse introspectResponse = introspect(new IntrospectRequest(request.getToken()));
+        if(introspectResponse.isValid()) {
+            SignedJWT signedJWT = SignedJWT.parse(request.getToken());
+            InvalidatedToken invalidatedToken = InvalidatedToken.builder()
+                .id(signedJWT.getJWTClaimsSet().getJWTID())
+                .expiryTime(signedJWT.getJWTClaimsSet().getExpirationTime())
+                .build();
+            invalidatedTokenRepository.save(invalidatedToken);
+        }
     }
     
     private String generateToken(Account account) {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
         
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
+            .jwtID(UUID.randomUUID().toString())
             .subject(account.getAccountName())
             .issuer("BTYDZ")
             .issueTime(new Date())

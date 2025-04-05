@@ -2,7 +2,6 @@ package com.bty.music_player.service;
 
 import java.util.List;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 

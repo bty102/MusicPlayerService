@@ -12,8 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.bty.music_player.entity.Account;
 import com.bty.music_player.entity.Permission;
 import com.bty.music_player.entity.Role;
-import com.bty.music_player.exception.AppException;
-import com.bty.music_player.exception.ErrorCode;
 import com.bty.music_player.repository.AccountRepository;
 import com.bty.music_player.repository.PermissionRepository;
 import com.bty.music_player.repository.RoleRepository;

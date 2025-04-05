@@ -1,7 +1,4 @@
-package com.bty.music_player.dto.response;
-
-import java.util.Set;
-
+package com.bty.music_player.dto.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -15,11 +12,6 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AccountResponse {
-
-    String accountName;
-
-    String password;
-    
-    Set<String> roleNames;
+public class LogOutRequest {
+    String token;
 }

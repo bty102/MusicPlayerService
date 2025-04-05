@@ -1,8 +1,5 @@
 package com.bty.music_player.dto.response;
 
-import java.util.List;
-
-import com.bty.music_player.entity.SongOfSinger;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

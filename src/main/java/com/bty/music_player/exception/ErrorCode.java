@@ -41,6 +41,8 @@ public enum ErrorCode {
     PERMISSIONNAMELEN_NOTVALID(1027, "permission name length must be at least 1 char", HttpStatus.BAD_REQUEST),
     ACCOUNTPW_NOTMATCH(1028, "password is not correct", HttpStatus.BAD_REQUEST),
     GENTOKEN_FAIL(1029, "cannot create token", HttpStatus.INTERNAL_SERVER_ERROR),
+    UNAUTHORIZED(1030, "You do not have permission", HttpStatus.FORBIDDEN),
+    UNAUTHENTICATED(1031, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     ;
 
     int code;
